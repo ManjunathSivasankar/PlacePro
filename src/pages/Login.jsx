@@ -49,6 +49,7 @@ export default function Login() {
               name="email"
               value={formData.email}
               onChange={handleChange}
+              autoComplete="username"
               required
             />
           </div>

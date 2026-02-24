@@ -67,8 +67,9 @@ export default function JobList() {
     try {
       setApplying(true);
       setError("");
+      console.log("Submitting application for job:", selectedJob.id);
 
-      // Upload resume
+      // Upload resume (with fallback logic now in service)
       const downloadURL = await uploadResume(resumeFile, currentUser.uid);
 
       // Submit application
@@ -79,17 +80,18 @@ export default function JobList() {
         currentUser.displayName || currentUser.email,
       );
 
+      console.log("Application submitted successfully!");
       setSuccess("Application submitted successfully!");
       setShowModal(false);
       setSelectedJob(null);
       setResumeFile(null);
 
-      // Refresh jobs
-      fetchJobs();
-
       setTimeout(() => setSuccess(""), 3000);
     } catch (err) {
-      setError(err.message);
+      console.error("Submission error:", err);
+      setError(
+        `Submission failed: ${err.message}. Please check if Firestore rules are deployed.`,
+      );
     } finally {
       setApplying(false);
     }

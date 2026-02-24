@@ -77,7 +77,7 @@ export default function AdminDashboard() {
     try {
       const apps = await getApplicationsForJob(jobId);
       setApplications(apps);
-      setSelectedJob(jobId);
+      setSelectedJobId(jobId);
     } catch (err) {
       setError(err.message);
     }
@@ -174,7 +174,7 @@ export default function AdminDashboard() {
         </div>
       )}
 
-      {selectedJob && (
+      {selectedJobId && (
         <div
           className="card glass-card animate-fade-in"
           style={{ marginTop: "40px" }}

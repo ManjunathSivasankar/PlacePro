@@ -85,6 +85,7 @@ export default function Signup() {
               name="email"
               value={formData.email}
               onChange={handleChange}
+              autoComplete="username"
               required
             />
           </div>
