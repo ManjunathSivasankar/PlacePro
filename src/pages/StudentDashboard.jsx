@@ -175,60 +175,62 @@ export default function StudentDashboard() {
               <p>No applications yet. Start applying today!</p>
             </div>
           ) : (
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>Job</th>
-                  <th>Resume</th>
-                  <th>Status</th>
-                  <th>Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                {applications.map((app) => {
-                  const job = jobs.find((j) => j.id === app.jobId);
-                  return (
-                    <tr key={app.id}>
-                      <td>{job?.title || "Job Deleted"}</td>
-                      <td>
-                        {app.resumeUrl ? (
-                          <button
-                            onClick={() => openResume(app.resumeUrl)}
-                            style={{
-                              background: "none",
-                              border: "none",
-                              color: "#007bff",
-                              fontSize: "12px",
-                              textDecoration: "underline",
-                              cursor: "pointer",
-                              padding: 0,
-                            }}
-                          >
-                            My Resume
-                          </button>
-                        ) : (
-                          <span style={{ color: "#999", fontSize: "12px" }}>
-                            N/A
+            <div className="table-container">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Job</th>
+                    <th>Resume</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {applications.map((app) => {
+                    const job = jobs.find((j) => j.id === app.jobId);
+                    return (
+                      <tr key={app.id}>
+                        <td>{job?.title || "Job Deleted"}</td>
+                        <td>
+                          {app.resumeUrl ? (
+                            <button
+                              onClick={() => openResume(app.resumeUrl)}
+                              style={{
+                                background: "none",
+                                border: "none",
+                                color: "#007bff",
+                                fontSize: "12px",
+                                textDecoration: "underline",
+                                cursor: "pointer",
+                                padding: 0,
+                              }}
+                            >
+                              My Resume
+                            </button>
+                          ) : (
+                            <span style={{ color: "#999", fontSize: "12px" }}>
+                              N/A
+                            </span>
+                          )}
+                        </td>
+                        <td>
+                          <span className={`status-badge status-${app.status}`}>
+                            {app.status}
                           </span>
-                        )}
-                      </td>
-                      <td>
-                        <span className={`status-badge status-${app.status}`}>
-                          {app.status}
-                        </span>
-                      </td>
-                      <td>
-                        {app.createdAt
-                          ? new Date(
-                              app.createdAt.seconds * 1000,
-                            ).toLocaleDateString()
-                          : "N/A"}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
+                        </td>
+                        <td>
+                          {app.createdAt
+                            ? new Date(
+                                app.createdAt.seconds * 1000,
+                              ).toLocaleDateString()
+                            : "N/A"}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
       </div>

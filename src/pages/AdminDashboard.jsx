@@ -184,56 +184,63 @@ export default function AdminDashboard() {
           {applications.length === 0 ? (
             <p className="empty-state">No applications found for this job.</p>
           ) : (
-            <table className="table">
-              <thead>
-                <tr>
-                  <th>Student</th>
-                  <th>Resume</th>
-                  <th>Current Status</th>
-                  <th>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {applications.map((app) => (
-                  <tr key={app.id}>
-                    <td>{app.userName}</td>
-                    <td>
-                      {app.resumeUrl ? (
-                        <button
-                          onClick={() => openResume(app.resumeUrl)}
-                          className="btn btn-primary"
-                          style={{
-                            padding: "4px 8px",
-                            fontSize: "12px",
-                            cursor: "pointer",
-                          }}
-                        >
-                          View Resume
-                        </button>
-                      ) : (
-                        <span style={{ color: "#999", fontSize: "12px" }}>
-                          No Resume
-                        </span>
-                      )}
-                    </td>
-                    <td>
-                      <select
-                        value={app.status}
-                        onChange={(e) =>
-                          handleStatusChange(app.id, e.target.value)
-                        }
-                        className="btn"
-                        style={{ padding: "5px", fontSize: "12px" }}
-                      >
-                        <option value="applied">Applied</option>
-                        <option value="selected">Selected</option>
-                        <option value="rejected">Rejected</option>
-                      </select>
-                    </td>
+            <div className="table-container">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Student</th>
+                    <th>Resume</th>
+                    <th>Current Status</th>
+                    <th>Action</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {applications.map((app) => (
+                    <tr key={app.id}>
+                      <td>{app.userName}</td>
+                      <td>
+                        {app.resumeUrl ? (
+                          <button
+                            onClick={() => openResume(app.resumeUrl)}
+                            className="btn btn-primary"
+                            style={{
+                              padding: "4px 8px",
+                              fontSize: "12px",
+                              cursor: "pointer",
+                            }}
+                          >
+                            View Resume
+                          </button>
+                        ) : (
+                          <span style={{ color: "#999", fontSize: "12px" }}>
+                            No Resume
+                          </span>
+                        )}
+                      </td>
+                      <td>
+                        <span className={`status-badge status-${app.status}`}>
+                          {app.status}
+                        </span>
+                      </td>
+                      <td>
+                        <select
+                          value={app.status}
+                          onChange={(e) =>
+                            handleStatusChange(app.id, e.target.value)
+                          }
+                          className="btn"
+                          style={{ padding: "5px", fontSize: "12px" }}
+                        >
+                          <option value="applied">Applied</option>
+                          <option value="selected">Selected</option>
+                          <option value="rejected">Rejected</option>
+                        </select>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </div>
       )}
