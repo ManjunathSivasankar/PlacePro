@@ -35,8 +35,8 @@ export default function Login() {
   };
 
   return (
-    <div className="page-container">
-      <div className="form-container">
+    <div className="page-container page-center animate-fade-in">
+      <div className="card glass-card form-container">
         <h2>Login</h2>
         {error && <div className="alert alert-error">{error}</div>}
 

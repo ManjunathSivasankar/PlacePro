@@ -7,6 +7,7 @@ import {
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import Landing from "./pages/Landing";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import AdminDashboard from "./pages/AdminDashboard";
@@ -28,11 +29,9 @@ function ProtectedRoute({ children, requiredRole }) {
   }
 
   if (requiredRole && userRole !== requiredRole) {
-    // If we have a role but it's not the required one, redirect to their home
     if (userRole) {
       return <Navigate to={userRole === "admin" ? "/admin" : "/student"} />;
     }
-    // If no role found, they might be logged in but have no profile
     return (
       <div className="page-container">
         <div className="alert alert-error">
@@ -47,7 +46,7 @@ function ProtectedRoute({ children, requiredRole }) {
 }
 
 function AppContent() {
-  const { currentUser, userRole, loading } = useAuth();
+  const { loading } = useAuth();
 
   if (loading) {
     return <div className="loading">Initializing...</div>;
@@ -58,6 +57,7 @@ function AppContent() {
       <Header />
       <main>
         <Routes>
+          <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
           <Route
@@ -98,16 +98,6 @@ function AppContent() {
               <ProtectedRoute requiredRole="admin">
                 <EditJob />
               </ProtectedRoute>
-            }
-          />
-          <Route
-            path="/"
-            element={
-              currentUser ? (
-                <Navigate to={userRole === "admin" ? "/admin" : "/student"} />
-              ) : (
-                <Navigate to="/login" />
-              )
             }
           />
         </Routes>

@@ -59,8 +59,11 @@ export default function Signup() {
   };
 
   return (
-    <div className="page-container">
-      <div className="form-container">
+    <div
+      className="page-container page-center animate-fade-in"
+      style={{ padding: "2rem 1rem" }}
+    >
+      <div className="card glass-card form-container">
         <h2>Create Account</h2>
         {error && <div className="alert alert-error">{error}</div>}
 

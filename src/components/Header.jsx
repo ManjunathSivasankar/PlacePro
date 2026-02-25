@@ -11,7 +11,7 @@ export default function Header() {
   const handleLogout = async () => {
     try {
       await logout();
-      navigate("/login");
+      navigate("/");
     } catch (err) {
       console.error("Logout error:", err);
     }
@@ -20,17 +20,32 @@ export default function Header() {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   return (
-    <header>
+    <header className="glass-header">
       <nav className="container">
         <Link
           to="/"
+          onClick={() => setIsMenuOpen(false)}
           style={{
             fontSize: "24px",
-            fontWeight: "800",
-            letterSpacing: "-0.025em",
+            fontWeight: "900",
+            letterSpacing: "-0.04em",
+            display: "flex",
+            alignItems: "center",
+            gap: "8px",
           }}
         >
-          🎓 <span style={{ color: "var(--primary)" }}>Place</span>Pro
+          <span
+            style={{
+              background: "var(--primary)",
+              color: "white",
+              padding: "4px 10px",
+              borderRadius: "8px",
+              fontSize: "18px",
+            }}
+          >
+            P
+          </span>
+          <span style={{ color: "var(--text-main)" }}>PlacePro</span>
         </Link>
 
         <button className="mobile-menu-btn" onClick={toggleMenu}>
