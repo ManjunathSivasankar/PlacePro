@@ -98,18 +98,17 @@ export default function StudentDashboard() {
       {/* Progress Stepper */}
       <div className="progress-stepper">
         <div className={`step ${getStepStatus() >= 1 ? "completed" : ""}`}>
-          <div className="step-circle">1</div>
-          <div className="step-label">Profile Setup</div>
+          {/* <div className="step-circle"></div> */}
+          <div className="step-label">1.Profile Setup</div>
         </div>
         <div
           className={`step ${getStepStatus() >= 2 ? "completed" : "active"}`}
         >
-          <div className="step-circle">2</div>
-          <div className="step-label">Applied</div>
+          <div className="step-label">2.Applied</div>
         </div>
         <div className={`step ${getStepStatus() >= 3 ? "completed" : ""}`}>
-          <div className="step-circle">3</div>
-          <div className="step-label">Recruited!</div>
+          {/* <div className="step-circle">3</div> */}
+          <div className="step-label">3.Recruited!</div>
         </div>
       </div>
 
