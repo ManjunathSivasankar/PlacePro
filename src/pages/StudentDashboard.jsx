@@ -3,6 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import {
   getApplicationsByStudent,
   deleteApplication,
+  openResume,
 } from "../services/applicationService";
 import { getAllJobs } from "../services/jobService";
 import {
@@ -178,6 +179,7 @@ export default function StudentDashboard() {
               <thead>
                 <tr>
                   <th>Job</th>
+                  <th>Resume</th>
                   <th>Status</th>
                   <th>Date</th>
                 </tr>
@@ -188,6 +190,28 @@ export default function StudentDashboard() {
                   return (
                     <tr key={app.id}>
                       <td>{job?.title || "Job Deleted"}</td>
+                      <td>
+                        {app.resumeUrl ? (
+                          <button
+                            onClick={() => openResume(app.resumeUrl)}
+                            style={{
+                              background: "none",
+                              border: "none",
+                              color: "#007bff",
+                              fontSize: "12px",
+                              textDecoration: "underline",
+                              cursor: "pointer",
+                              padding: 0,
+                            }}
+                          >
+                            My Resume
+                          </button>
+                        ) : (
+                          <span style={{ color: "#999", fontSize: "12px" }}>
+                            N/A
+                          </span>
+                        )}
+                      </td>
                       <td>
                         <span className={`status-badge status-${app.status}`}>
                           {app.status}

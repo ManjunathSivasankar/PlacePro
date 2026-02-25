@@ -70,64 +70,63 @@ export async function deleteApplication(appId) {
   await deleteDoc(doc(db, "applications", appId));
 }
 
-// Upload resume to Firebase Storage and return download URL
+// Upload resume as Base64 and return data URL
 export async function uploadResume(file, userId, onProgress = () => {}) {
   if (!file) throw new Error("No file provided");
-  console.log("Starting resume upload for user:", userId);
+  console.log("Starting Base64 resume conversion for user:", userId);
 
-  try {
-    const storage = getStorage(app);
-    const path = `resumes/${userId}/${Date.now()}_${file.name}`;
-    const ref = storageRef(storage, path);
-    const uploadTask = uploadBytesResumable(ref, file);
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
 
-    return new Promise((resolve, reject) => {
-      // 10 second timeout for upload
-      const timeout = setTimeout(() => {
-        console.warn("Upload timed out. Using fallback URL.");
-        resolve(`https://demo-resume-fallback.com/${file.name}`);
-      }, 10000);
+    reader.onloadstart = () => onProgress(0.1);
+    reader.onprogress = (event) => {
+      if (event.lengthComputable) {
+        onProgress(event.loaded / event.total);
+      }
+    };
 
-      uploadTask.on(
-        "state_changed",
-        (snapshot) => {
-          const progress = snapshot.totalBytes
-            ? snapshot.bytesTransferred / snapshot.totalBytes
-            : 0;
-          console.log(`Upload progress: ${Math.round(progress * 100)}%`);
-          onProgress(progress);
-        },
-        (error) => {
-          clearTimeout(timeout);
-          console.error("Storage upload error:", error);
-          // If storage is not set up (project not found or bucket error), use fallback
-          if (
-            error.code === "storage/project-not-found" ||
-            error.code === "storage/unauthorized"
-          ) {
-            resolve(`https://demo-resume-fallback.com/${file.name}`);
-          } else {
-            reject(error);
-          }
-        },
-        async () => {
-          clearTimeout(timeout);
-          try {
-            const url = await getDownloadURL(uploadTask.snapshot.ref);
-            console.log("Upload successful, URL:", url);
-            resolve(url);
-          } catch (err) {
-            console.warn("Could not get download URL, using fallback.");
-            resolve(`https://demo-resume-fallback.com/${file.name}`);
-          }
-        },
-      );
-    });
-  } catch (err) {
-    console.warn(
-      "Firebase Storage might not be initialized. Using fallback.",
-      err,
+    reader.onload = () => {
+      console.log("Conversion successful");
+      onProgress(1.0);
+      resolve(reader.result);
+    };
+
+    reader.onerror = (error) => {
+      console.error("FileReader error:", error);
+      reject(new Error("Failed to read file"));
+    };
+
+    reader.readAsDataURL(file);
+  });
+}
+
+// Open resume in a new tab (handles Base64 conversion to Blob for better stability)
+export function openResume(resumeUrl) {
+  if (!resumeUrl) return;
+
+  if (resumeUrl.startsWith("https://demo-resume-fallback.com")) {
+    alert(
+      "This is an old application with a legacy resume link that is no longer active. Please test with a NEW application/upload.",
     );
-    return `https://demo-resume-fallback.com/${file.name}`;
+    return;
+  }
+
+  if (resumeUrl.startsWith("data:application/pdf;base64,")) {
+    try {
+      const base64 = resumeUrl.split(",")[1];
+      const binaryString = window.atob(base64);
+      const bytes = new Uint8Array(binaryString.length);
+      for (let i = 0; i < binaryString.length; i++) {
+        bytes[i] = binaryString.charCodeAt(i);
+      }
+      const blob = new Blob([bytes], { type: "application/pdf" });
+      const url = URL.createObjectURL(blob);
+      window.open(url, "_blank");
+    } catch (error) {
+      console.error("Error opening Base64 PDF:", error);
+      alert("Error opening resume. Please try a different PDF.");
+    }
+  } else {
+    window.open(resumeUrl, "_blank");
   }
 }

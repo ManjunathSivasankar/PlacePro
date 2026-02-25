@@ -5,6 +5,7 @@ import { getJobsByAdmin, subscribeToAdminJobs } from "../services/jobService";
 import {
   getApplicationsForJob,
   updateApplicationStatus,
+  openResume,
 } from "../services/applicationService";
 import { getRandomAvatar } from "../services/demoService";
 
@@ -187,6 +188,7 @@ export default function AdminDashboard() {
               <thead>
                 <tr>
                   <th>Student</th>
+                  <th>Resume</th>
                   <th>Current Status</th>
                   <th>Action</th>
                 </tr>
@@ -196,9 +198,23 @@ export default function AdminDashboard() {
                   <tr key={app.id}>
                     <td>{app.userName}</td>
                     <td>
-                      <span className={`status-badge status-${app.status}`}>
-                        {app.status}
-                      </span>
+                      {app.resumeUrl ? (
+                        <button
+                          onClick={() => openResume(app.resumeUrl)}
+                          className="btn btn-primary"
+                          style={{
+                            padding: "4px 8px",
+                            fontSize: "12px",
+                            cursor: "pointer",
+                          }}
+                        >
+                          View Resume
+                        </button>
+                      ) : (
+                        <span style={{ color: "#999", fontSize: "12px" }}>
+                          No Resume
+                        </span>
+                      )}
                     </td>
                     <td>
                       <select

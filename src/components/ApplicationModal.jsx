@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 export default function ApplicationModal({
   job,
@@ -11,12 +11,12 @@ export default function ApplicationModal({
   const handleFileChange = (e) => {
     const file = e.target.files?.[0];
     if (file) {
-      if (file.type !== 'application/pdf') {
-        alert('Only PDF files are allowed');
+      if (file.type !== "application/pdf") {
+        alert("Only PDF files are allowed");
         return;
       }
-      if (file.size > 5 * 1024 * 1024) {
-        alert('File size exceeds 5MB limit');
+      if (file.size > 1 * 1024 * 1024) {
+        alert("File size exceeds 1MB limit for Firestore storage");
         return;
       }
       setResumeFile(file);
@@ -31,7 +31,7 @@ export default function ApplicationModal({
         </span>
         <h2>Apply for {job.title}</h2>
 
-        <div style={{ marginTop: '20px' }}>
+        <div style={{ marginTop: "20px" }}>
           <p>
             <strong>Location:</strong> {job.location}
           </p>
@@ -40,7 +40,7 @@ export default function ApplicationModal({
           </p>
         </div>
 
-        <div className="form-group" style={{ marginTop: '30px' }}>
+        <div className="form-group" style={{ marginTop: "30px" }}>
           <label htmlFor="resume">Upload Resume (PDF)</label>
           <input
             type="file"
@@ -50,21 +50,25 @@ export default function ApplicationModal({
             required
           />
           {resumeFile && (
-            <p style={{ color: '#28a745', marginTop: '5px' }}>
+            <p style={{ color: "#28a745", marginTop: "5px" }}>
               ✓ {resumeFile.name} ({(resumeFile.size / 1024).toFixed(2)} KB)
             </p>
           )}
         </div>
 
-        <div className="btn-group" style={{ marginTop: '20px' }}>
+        <div className="btn-group" style={{ marginTop: "20px" }}>
           <button
             onClick={onSubmit}
             className="btn btn-success"
             disabled={applying || !resumeFile}
           >
-            {applying ? 'Submitting...' : 'Submit Application'}
+            {applying ? "Submitting..." : "Submit Application"}
           </button>
-          <button onClick={onClose} className="btn btn-primary" disabled={applying}>
+          <button
+            onClick={onClose}
+            className="btn btn-primary"
+            disabled={applying}
+          >
             Cancel
           </button>
         </div>
